@@ -78,7 +78,7 @@ function Game({stopGame, number}) {
             />
           </View>
           <Text>Tu número: {number}</Text>
-          <Text>Rondas: {rounds}/10</Text>
+          <Text>Intentos: {rounds}/10</Text>
         </>
       ) : (
         <>
