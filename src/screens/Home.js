@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {Text, TextInput, View} from 'react-native';
 
-import MainButton from '../components/MainButton';
-import SecondaryButton from '../components/SecondaryButton';
+import StyledButton from '../components/StyledButton';
 import styles from '../styles/Home.styles';
 import {text} from '../styles/Global.styles';
 
@@ -34,9 +33,13 @@ function Home({startGame}) {
           value={number}
           onChangeText={txt => handleNumber(txt.replace(/[^0-9]/g, ''))}
         />
-        <SecondaryButton title="LIMPIAR" pressAction={() => setNumber('')} />
+        <StyledButton
+          title="LIMPIAR"
+          pressAction={() => setNumber('')}
+          type="secondary"
+        />
       </View>
-      <MainButton
+      <StyledButton
         pressAction={() => startGame(number)}
         title="INICIAR"
         disabled={number.length <= 0}

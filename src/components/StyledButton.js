@@ -2,14 +2,19 @@ import {Pressable, Text} from 'react-native';
 import React, {useState} from 'react';
 import {buttons, theme} from '../styles/Global.styles';
 
-function MainButton({pressAction, title, disabled = false}) {
+function StyledButton({
+  pressAction,
+  title,
+  disabled = false,
+  type = 'primary',
+}) {
   const [isPressed, setIsPressed] = useState(false);
 
   return (
     <Pressable
       disabled={disabled}
       style={[
-        buttons.primary,
+        type === 'primary' ? buttons.primary : buttons.secondary,
         {
           backgroundColor: disabled
             ? '#CCC'
@@ -21,9 +26,14 @@ function MainButton({pressAction, title, disabled = false}) {
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       onPress={() => pressAction()}>
-      <Text style={buttons.primaryText}>{title}</Text>
+      <Text
+        style={
+          type === 'primary' ? buttons.primaryText : buttons.secondaryText
+        }>
+        {title}
+      </Text>
     </Pressable>
   );
 }
 
-export default MainButton;
+export default StyledButton;

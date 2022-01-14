@@ -1,8 +1,7 @@
 import {Alert, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
-import MainButton from '../components/MainButton';
-import SecondaryButton from '../components/SecondaryButton';
+import StyledButton from '../components/StyledButton';
 import styles from '../styles/Game.styles';
 import {text} from '../styles/Global.styles';
 
@@ -11,13 +10,17 @@ function Game({stopGame, number}) {
   const [numbers, setNumbers] = useState({max: 100, min: 0});
   const [excludedNumbers, setExcludedNumbers] = useState([]);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [rounds, setRounds] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const randomNumberBetween = (min, max) => {
+    setLoading(true);
     let num = Math.floor(Math.random() * (max - min)) + min;
     if (excludedNumbers.includes(num)) {
       return randomNumberBetween(min, max);
     }
+    setTimeout(() => {
+      setLoading(false);
+    }, 200);
     return num;
   };
 
@@ -50,41 +53,37 @@ function Game({stopGame, number}) {
     }
     setNumbers({...numbers, [type]: generatedNumber});
     setExcludedNumbers([...excludedNumbers, generatedNumber]);
-    setRounds(current => ++current);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.numberContainer}>
-        <Text style={text.normal}>Suposición</Text>
-        <Text style={styles.randomNumber}>{generatedNumber}</Text>
+        {!isCorrect && <Text style={text.normal}>Suposición</Text>}
+        <Text style={styles.randomNumber}>
+          {loading ? '...' : generatedNumber}
+        </Text>
       </View>
       {!isCorrect ? (
         <>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginBottom: 10,
-              justifyContent: 'space-evenly',
-              width: '100%',
-            }}>
-            <SecondaryButton
+          <View style={styles.buttonsContainer}>
+            <StyledButton
               title="MENOR"
               pressAction={() => handleMaxMin('max')}
             />
-            <SecondaryButton
+            <StyledButton
               title="MAYOR"
               pressAction={() => handleMaxMin('min')}
             />
           </View>
           <Text>Tu número: {number}</Text>
-          <Text>Intentos: {rounds}/10</Text>
         </>
       ) : (
-        <>
-          <Text style={text.title}>NÚMERO CORRECTO</Text>
-          <MainButton pressAction={stopGame} title="REINICIAR" />
-        </>
+        !loading && (
+          <>
+            <Text style={text.title}>NÚMERO CORRECTO</Text>
+            <StyledButton pressAction={stopGame} title="REINICIAR" />
+          </>
+        )
       )}
     </View>
   );

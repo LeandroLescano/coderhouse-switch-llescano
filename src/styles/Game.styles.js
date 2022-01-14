@@ -19,6 +19,12 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
+  buttonsContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    justifyContent: 'space-evenly',
+    width: '100%',
+  },
   numberContainer: {
     margin: 10,
     shadowColor: '#000',
